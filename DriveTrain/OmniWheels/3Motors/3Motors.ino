@@ -1,11 +1,11 @@
-double vector [3] = {0.0, 1.0, 0.0}; 
+double vector [3] = {0.0, 1.0, 0.0}; // X Y omega 
 //recalculate the dynamics matrix using matlab for different radii
 double dynamics [3][3] = {{0.866, 0.5, -0.5},{0.0, -1.0, -0.5},{-0.866, 0.5, -0.5}};
 double speeds [3]={0,0,0};
 double wheelR = 0.05; // cm estimate
-double wheelF [3];
-double wheelT [3]; 
-double wheelDir [3]; 
+double wheelF [3]; // Frequency
+double wheelT [3]; // Period
+double wheelDir [3]; // direction 
 
 
 
