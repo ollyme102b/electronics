@@ -63,6 +63,8 @@ for i = 1:200
     hold on
     quiver(wheels(1, :), wheels(2, :), spin(1,:), spin(2,:))
     plot(bodyX2, bodyY2)
+    plot(moveX, moveY, '*')
+    plot(moveX2, moveY2, 'o')
     quiver(wheels2(1, :), wheels2(2, :), spin2(1,:), spin2(2,:))
     xlim([-5, 5]); 
     ylim([-5, 5]);
@@ -83,7 +85,7 @@ for i = 1:200
     else 
         plot([moveX, moveX2], [moveY, moveY2], 'r');
     end
-    title(sprintf('Beam Length = %0.', ))
+    title(sprintf('Beam Length = %0.5g', beamLength))
    currFrame = getframe(gcf);
    writeVideo(vidObj,currFrame);
 
