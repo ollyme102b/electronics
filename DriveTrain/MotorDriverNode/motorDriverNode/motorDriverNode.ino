@@ -53,6 +53,9 @@ void setup()
  */
 void loop()
 {
+  digitalWrite(6, boolean(wheelDir[0])); 
+  digitalWrite(4, !boolean(wheelDir[1]));
+  digitalWrite(2, boolean(wheelDir[2]));
   for (int i = 0; i < wheelT[0]*wheelT[1]*wheelT[2]; i++) {
       if (i%(int(wheelT[0])*2) < wheelT[0]){
         digitalWrite(7, HIGH);
