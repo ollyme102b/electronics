@@ -9,6 +9,9 @@ double wheelR = 0.05; // cm estimate
 double wheelF [3] = {0.0, 0.0, 0.0}; // Frequency
 double wheelT [3]= {0.0, 0.0, 0.0}; // Period
 double wheelDir [3] = {0.0, 0.0, 0.0}; // direction 
+double time1; // to control speed
+double time2; // to control speed
+double stillWheel [3] = {0,0,0};
 
 void messageCb(const geometry_msgs::Twist& toggle_msg) {
   vector[0] = toggle_msg.linear.x;
