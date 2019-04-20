@@ -1,4 +1,4 @@
-double vector [3] = {0, 0.4, 0}; // X Y omega 
+double vector [3] = {0, 0, 0.25}; // X Y omega 
 //recalculate the dynamics matrix using matlab for different radii
 double dynamics [3][3] = {{0.866, 0.5, -0.5},{0.0, -1.0, -0.5},{-0.866, 0.5, -0.5}};
 double speeds [3]={0,0,0};
@@ -37,7 +37,7 @@ void setup() {
       stillWheel[i] = 1;          //Indicator showing that the ith wheel isn't moivng while in this configuration 
       wheelT[i] = 1;              //So that when finding the overall period for the system, this still wheel doesn't have an effect
     }else{
-      wheelT[i] = round(1000*abs(1/wheelF[i]))*2*pi/200; // Now in rounded milliseconds per step
+      wheelT[i] = round(1000*abs(1/wheelF[i]))*2*3.14/200; // Now in rounded milliseconds per step
     }
     wheelDir[i] = wheelF[i]>0;
   }
@@ -54,7 +54,7 @@ void loop() {
   for (int i = 0; i < wheelT[0]*wheelT[1]*wheelT[2]; i++) {
     time1 = micros(); // Get actuation start time
     
-    if (wheelStill[1] == 0){
+    if (stillWheel[1] == 0){
       if (i%(int(wheelT[0]*2)) < wheelT[0]){  //multiplied by two because the loop iterates at 0.5 milliseconds
         digitalWrite(7, HIGH);
       }else{
@@ -62,7 +62,7 @@ void loop() {
       }
     }
 
-    if (wheelStill[2] == 0){
+    if (stillWheel[2] == 0){
       if (i%(int(wheelT[1]*2)) < wheelT[1]){
         digitalWrite(5, HIGH);
       }else{
@@ -70,7 +70,7 @@ void loop() {
       }
     }
 
-    if (wheelStill[3] == 0){
+    if (stillWheel[3] == 0){
       if (i%(int(wheelT[2]*2)) < wheelT[2]){
         digitalWrite(3, HIGH);
       }else{
@@ -78,7 +78,7 @@ void loop() {
       }
     }
 
-    time2 = micro(); // Get actuation end time
+    time2 = micros(); // Get actuation end time
     if (time1 > time2 ){
       time2 = time1; // Correct for modulus measurement error
     }
