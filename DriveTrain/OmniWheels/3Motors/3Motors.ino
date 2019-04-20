@@ -1,4 +1,4 @@
-double vector [3] = {0, 0, 1}; // X Y omega 
+double vector [3] = {0, 0, 0.5}; // X Y omega 
 //recalculate the dynamics matrix using matlab for different radii
 double dynamics [3][3] = {{0.866, 0.5, -0.5},{0.0, -1.0, -0.5},{-0.866, 0.5, -0.5}};
 double speeds [3]={0,0,0};
