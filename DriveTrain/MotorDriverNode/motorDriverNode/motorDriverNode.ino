@@ -36,6 +36,7 @@ void messageCb(const geometry_msgs::Twist& toggle_msg) {
       wheelT[i] = 1;              //So that when finding the overall period for the system, this still wheel doesn't have an effect
     } else {
       wheelT[i] = round(1000*abs(1/wheelF[i]))*2*3.14/200; // Now in rounded milliseconds per step
+      stillWheel[i] = 0;
     }
     wheelDir[i] = wheelF[i]>0;
   }
