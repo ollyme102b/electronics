@@ -12,6 +12,7 @@ double wheelDir [3] = {0.0, 0.0, 0.0}; // direction
 double time1; // to control speed
 double time2; // to control speed
 double stillWheel [3] = {0,0,0};
+int iterationTime = 0;
 
 void messageCb(const geometry_msgs::Twist& toggle_msg) {
   vector[0] = toggle_msg.linear.x;
@@ -40,6 +41,9 @@ void messageCb(const geometry_msgs::Twist& toggle_msg) {
     }
     wheelDir[i] = wheelF[i]>0;
   }
+  digitalWrite(6, boolean(wheelDir[0])); 
+  digitalWrite(4, boolean(wheelDir[1]));
+  digitalWrite(2, boolean(wheelDir[2]));
 }
 
 /* 
@@ -72,44 +76,42 @@ void setup()
  */
 void loop()
 {  
+  time1 = micros(); // Get actuation start time
+
   debug_msg.data = wheelT[0]*wheelT[1]*wheelT[2];
   chatter.publish(&debug_msg);
   
-  digitalWrite(6, boolean(wheelDir[0])); 
-  digitalWrite(4, boolean(wheelDir[1]));
-  digitalWrite(2, boolean(wheelDir[2]));
-  
-  for (int i = 0; i < wheelT[0]*wheelT[1]*wheelT[2]; i++) {
-    time1 = micros(); // Get actuation start time
-    if (stillWheel[0] == 0){
-      if (i%(int(wheelT[0]*2)) < wheelT[0]){  //multiplied by two because the loop iterates at 0.5 milliseconds
-        digitalWrite(7, HIGH);
-      }else{
-        digitalWrite(7, LOW);
-      }
+  if (stillWheel[0] == 0){
+    if (iterationTime%(int(wheelT[0]*2)) < wheelT[0]){  //multiplied by two because the loop iterates at 0.5 milliseconds
+      digitalWrite(7, HIGH);
+    }else{
+      digitalWrite(7, LOW);
     }
-    if (stillWheel[1] == 0){
-      if (i%(int(wheelT[1]*2)) < wheelT[1]){
-        digitalWrite(5, HIGH);
-      }else{
-        digitalWrite(5, LOW);
-      }
-    }
-    if (stillWheel[2] == 0){
-      if (i%(int(wheelT[2]*2)) < wheelT[2]){
-        digitalWrite(3, HIGH);
-      }else{
-        digitalWrite(3, LOW);
-      }
-    }
-    time2 = micros(); // Get actuation end time
-    if (time1 > time2 ){
-      time2 = time1; // Correct for modulus measurement error
-    }
-    delayMicroseconds(500 - (time2 - time1)); // 500 microseconds and the smallest resolution is 1 millisecond step. Also, adjust for the time lost in actuation
   }
+  if (stillWheel[1] == 0){
+    if (iterationTime%(int(wheelT[1]*2)) < wheelT[1]){
+      digitalWrite(5, HIGH);
+    }else{
+      digitalWrite(5, LOW);
+    }
+  }
+  if (stillWheel[2] == 0){
+    if (iterationTime%(int(wheelT[2]*2)) < wheelT[2]){
+      digitalWrite(3, HIGH);
+    }else{
+      digitalWrite(3, LOW);
+    }
+  }
+   // 500 microseconds and the smallest resolution is 1 millisecond step. Also, adjust for the time lost in actuation
   debug_msg.data=1;
   chatter.publish(&debug_msg);
   nh.spinOnce();
+  
+  iterationTime = (iterationTime + 1) % int(wheelT[0]*wheelT[1]*wheelT[2]);
+  time2 = micros(); // Get actuation end time
+  if (time1 > time2 ){
+    time2 = time1; // Correct for modulus measurement error
+  }
+  delayMicroseconds(500 - (time2 - time1));
 }
 
