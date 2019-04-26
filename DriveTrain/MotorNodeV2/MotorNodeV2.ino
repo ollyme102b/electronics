@@ -102,7 +102,7 @@ class StepperMotor {
 * Declare transforms and stepper motors
 */
 double referenceVelocities [3] = {0.0, 0.0, 0.0}; // [Vx, Vy, Omega] 
-double dynamics [3][3] = {{0.866, 0.5, -0.5},{0.0, -1.0, -0.5},{-0.866, 0.5, -0.5}}; // [w1,w2,w3] = Av
+double dynamics [3][3] = {{.333, -0.5774, 0.14},{.333, .5774, 0.14},{-.6667, 0, 0.14}}; // [w1,w2,w3] = Av
 double wheelVelocities [3]={0,0,0};
 StepperMotor stepper0 = StepperMotor(7,6, micros()/1e6);
 StepperMotor stepper1 = StepperMotor(5,4, micros()/1e6);

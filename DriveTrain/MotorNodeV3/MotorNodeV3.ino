@@ -18,13 +18,12 @@ class StepperMotor {
   bool currentState;
   double prevStepTime;
   double wheelRadius;
-  double droppedTime
   
 
   
   public:
 
-  /* 
+  /* zz
   * Creates a stepper motor that attaches to the stPin and dirPin.
   */
   StepperMotor(int stPin, int dirPin, double currTime) {
@@ -35,7 +34,6 @@ class StepperMotor {
     currentState = false;
     prevStepTime = currTime;
     wheelRadius = 0.05;
-    droppedTime=0;
   }
   
   /*
@@ -76,9 +74,8 @@ class StepperMotor {
   void actuate() {
 
     double currTime = micros() / 1e6;
-    if (isMoving && (currTime - prevStepTime + droppedTime > stepPeriod)) {
+    if (isMoving && (currTime - prevStepTime > stepPeriod)) {
       flip();
-      droppedTime = (currTime-prevStepTime + droppedTime)-stepPeriod; // Will record the time lost  
       prevStepTime = currTime;
     }
   }
@@ -105,11 +102,11 @@ class StepperMotor {
 * Declare transforms and stepper motors
 */
 double referenceVelocities [3] = {0.0, 0.0, 0.0}; // [Vx, Vy, Omega] 
-double dynamics [3][3] = {{0.866, 0.5, -0.5},{0.0, -1.0, -0.5},{-0.866, 0.5, -0.5}}; // [w1,w2,w3] = Av
+double dynamics [3][3] = {{0.5, 0.866, -wheelRadius},{-1.0, 00, wheelRadius},{0.5, -0.866, wheelRadius}}; // [w1,w2,w3] = Av
 double wheelVelocities [3]={0,0,0};
-StepperMotor stepper0 = StepperMotor(7,6, micros()/1e6);
+StepperMotor stepper0 = StepperMotor(3,2, micros()/1e6);
 StepperMotor stepper1 = StepperMotor(5,4, micros()/1e6);
-StepperMotor stepper2 = StepperMotor(3,2, micros()/1e6);
+StepperMotor stepper2 = StepperMotor(7,6, micros()/1e6);
 
 
 /*
