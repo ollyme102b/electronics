@@ -113,9 +113,9 @@ StepperMotor stepper2 = StepperMotor(3,2, micros()/1e6);
 * Callback function. Receives reference command messages and sets stepper motor speeds.
 */
 void messageCb(const geometry_msgs::Twist& toggle_msg) {
-  referenceVelocities[0] = toggle_msg.linear.x;
-  referenceVelocities[1] = toggle_msg.linear.y;
-  referenceVelocities[2] = toggle_msg.angular.z;
+  referenceVelocities[0] = toggle_msg.linear.y;
+  referenceVelocities[1] = toggle_msg.linear.x;
+  referenceVelocities[2] = -toggle_msg.angular.z;
   
   for (int k = 0; k<3; k++) {
     wheelVelocities[k] = 0;
