@@ -1,4 +1,4 @@
-#include <ros.h>
+  #include <ros.h>
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/Vector3.h>
 #include <std_msgs/Float64.h>
@@ -40,8 +40,8 @@ class StepperMotor {
   * Takes desired linear velocity and sets the step period for this stepper motor.
   */
   void setStepPeriod(double linVelocity){
-    double stepsPerSecond = 200 * linVelocity/(wheelRadius * 2 * 3.14159265);
-    if (abs(stepsPerSecond) <= 2) {
+    double stepsPerSecond = 2*200 * linVelocity/(wheelRadius * 2 * 3.14159265);
+    if (abs(stepsPerSecond) <= 4) {
       isMoving = false;
     } else {
 
@@ -102,7 +102,7 @@ class StepperMotor {
 * Declare transforms and stepper motors
 */
 double referenceVelocities [3] = {0.0, 0.0, 0.0}; // [Vx, Vy, Omega] 
-double dynamics [3][3] = {{.333, -0.5774, 0.14},{.333, .5774, 0.14},{-.6667, 0, 0.14}}; // [w1,w2,w3] = Av
+double dynamics [3][3] = {{0, -1, -0.14},{-0.866, .5, -0.14},{0.866, .5, -0.14}}; // [w1,w2,w3] = Av
 double wheelVelocities [3]={0,0,0};
 StepperMotor stepper0 = StepperMotor(7,6, micros()/1e6);
 StepperMotor stepper1 = StepperMotor(5,4, micros()/1e6);
@@ -113,9 +113,9 @@ StepperMotor stepper2 = StepperMotor(3,2, micros()/1e6);
 * Callback function. Receives reference command messages and sets stepper motor speeds.
 */
 void messageCb(const geometry_msgs::Twist& toggle_msg) {
-  referenceVelocities[0] = toggle_msg.linear.y;
-  referenceVelocities[1] = toggle_msg.linear.x;
-  referenceVelocities[2] = -toggle_msg.angular.z;
+  referenceVelocities[0] = toggle_msg.linear.x;
+  referenceVelocities[1] = toggle_msg.linear.y;
+  referenceVelocities[2] = toggle_msg.angular.z;
   
   for (int k = 0; k<3; k++) {
     wheelVelocities[k] = 0;
